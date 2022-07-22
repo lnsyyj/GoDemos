@@ -1,0 +1,57 @@
+// 参考https://pjchender.dev/golang/grpc-getting-started/
+
+// 1. 编写protocol buffer
+// 定义使用的 protocol buffer 版本
+syntax = "proto3";
+
+// 定义namespace
+package calculator;
+
+// generated code 的 full Go import path
+option  go_package = "protobuf/calculator";
+
+// 使用 message 定义资料交换的格式
+message CalculatorRequest {
+    int32 number1 = 1;
+    int32 number2 = 2;
+}
+
+message CalulatorResponse {
+    int32 result = 1;
+}
+
+// 使用 service 定义呼叫 API 的方法名称
+service CalculatorService {
+    // 定义一个方法
+    rpc Add(CalculatorRequest) returns (CalulatorResponse) {};
+}
+
+// 2. 安装protocol buffer编译环境
+
+// 安装protoc工具
+// root@spdk-3:~# apt install -y protobuf-compiler
+// root@spdk-3:~# protoc --version
+// libprotoc 3.12.4
+
+// 安装 Protocol Buffer
+// root@spdk-3:~# go get -u google.golang.org/protobuf/proto@latest
+// go: downloading google.golang.org/protobuf v1.28.0
+// go: upgraded google.golang.org/protobuf v1.27.1 => v1.28.0
+
+// 安装 Protocol Buffer 的编译工具
+// root@spdk-3:~# go install github.com/golang/protobuf/protoc-gen-go@latest
+// go: downloading github.com/golang/protobuf v1.5.2
+// go: downloading google.golang.org/protobuf v1.26.0
+
+// 安装grpc
+// root@spdk-3:~# go install google.golang.org/grpc@latest
+// go: downloading google.golang.org/grpc v1.48.0
+// go: downloading golang.org/x/net v0.0.0-20201021035429-f5854403a974
+// go: downloading google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013
+// go: downloading google.golang.org/protobuf v1.27.1
+// go: downloading golang.org/x/sys v0.0.0-20210119212857-b64e53b001e4
+// go: downloading golang.org/x/text v0.3.3
+// package google.golang.org/grpc is not a main package
+
+// 3. 编译protocol buffer
+// root@spdk-3:~# protoc --go_out=. calculator.proto
